@@ -7,6 +7,17 @@
 - [**Mursal Furqan Kumbhar** (Mat.: 2047419)](mailto:kumbhar.2047419@studenti.uniroma1.it "Write an email to Mursal Furqan Kumbhar")
 - [**Srinjan Ghosh** (Mat.: 2053796)](mailto:ghosh.2053796@studenti.uniroma1.it "Write an Email to Srinjan Ghosh")
 
+## Repository Structure
+```
+/code          # Contains all source code related to the SecureEntry system
+/datasets      # Stores datasets for training and testing facial and voice recognition models
+/media        # Multimedia assets such as images and videos used in documentation or UI design
+/mics          # Miscellaneous files and configuration settings
+/strategy      # Project strategy, planning documents, and development workflows
+references.md  # Contains all references used in the project
+README.md      # Main documentation file for project overview
+```
+
 ## Problem Statement
 Traditional door authentication methods can be easily bypassed, making home security a major concern. We aim to develop an advanced intrusion alarm system that utilizes both facial and voice recognition to ensure that only authorized individuals can enter a home. This system will significantly reduce the risk of unauthorized access while providing users with a seamless experience.
 
