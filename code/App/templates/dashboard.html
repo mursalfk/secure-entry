@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script>
+        function captureFaces(userId) {
+            // Show the modal
+            document.getElementById("status-modal").style.display = "block";
+            document.getElementById("status-updates").innerHTML = "Capturing face poses...";
+
+            fetch(`/capture_faces/${userId}`, { method: "POST" })
+                .then(response => response.json())
+                .then(data => {
+                    let updates = document.getElementById("status-updates");
+                    updates.innerHTML = ""; // Clear previous messages
+
+                    data.updates.forEach((msg) => {
+                        let p = document.createElement("p");
+                        p.textContent = msg;
+                        if (msg === "Training Complete") {
+                            p.style.fontWeight = "bold";
+                        }
+                        updates.appendChild(p);
+                    });
+
+                    document.getElementById("ok-button").style.display = "block"; 
+                    document.getElementById("ok-button").style.width = "100%";
+                });
+        }
+
+        function closePopup() {
+            document.getElementById("status-modal").style.display = "none";
+            location.reload(); // Refresh page after training completes
+        }
+    </script>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            margin: auto;
+            border-collapse: collapse;
+            width: 60%;
+        }
+        table, th, td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+        img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+        button {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .logout-btn {
+            background-color: red;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <h2>Stored Users</h2>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Face</th>
+            <th>Action</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user[0] }}</td>
+            <td>{{ user[1] }}</td>
+            <td>
+                <img src="data:image/jpeg;base64,{{ user[2] | b64encode }}" alt="Face"/>
+            </td>
+            <td>
+                <a href="{{ url_for('admin.remove_user', user_id=user[0]) }}">
+                    <button>Delete</button>
+                </a>
+                <a href="#" onclick="captureFaces({{ user[0] }})">
+                    <button>Capture Face Poses</button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Status Modal -->
+    <div id="status-modal" style="display: none; position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid black;">
+        <h3>Status</h3>
+        <div id="status-updates"></div>
+        <button id="ok-button" style="display: none;" onclick="closePopup()">OK</button>
+    </div>
+
+    <h2>Add New User</h2>
+    <form method="POST" action="{{ url_for('admin.add_new_user') }}" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="User Name" required />
+        <input type="file" name="image" accept="image/*" required />
+        <button type="submit">Add User</button>
+    </form>
+
+    <br />
+    <button class="logout-btn" onclick="window.location.href='/'">Logout</button>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capturing Face Poses</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        h1 { color: #333; }
+        .container { margin-top: 20px; }
+        .loading { font-size: 20px; color: green; }
+    </style>
+    <script>
+        function redirectToDashboard() {
+            setTimeout(() => {
+                window.location.href = "/dashboard";
+            }, 5000);  // Redirect after 5 seconds
+        }
+    </script>
+</head>
+<body onload="redirectToDashboard()">
+    <h1>Capturing Face Poses</h1>
+    <div class="container">
+        <p class="loading">📸 Capturing images... Please wait.</p>
+        <p>This may take a few seconds.</p>
+        <p>After capturing, the model will be retrained automatically.</p>
+        <p>Redirecting to Admin Dashboard...</p>
+    </div>
+</body>
+</html>

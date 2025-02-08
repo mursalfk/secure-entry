@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        .face-preview { position: absolute; top: 10px; right: 10px; width: 100px; height: 100px; border: 2px solid #333; }
+        button { padding: 15px 20px; font-size: 16px; margin: 10px; cursor: pointer; border: none; }
+        .back-btn { background-color: grey; color: white; }
+    </style>
+    <script>
+        function checkDoorStatus() {
+            fetch('/door_status').then(response => response.json()).then(data => {
+                if (data.door_opened) {
+                    document.getElementById('statusMessage').innerHTML = "🚪 Door Opened! Camera closing in " + data.remaining_time + " second(s)";
+                } else if (data.recognized_id !== null) {
+                    document.getElementById('videoContainer').innerHTML = '';
+                    document.getElementById('statusMessage').innerHTML = "Welcome Home, " + data.recognized_id;
+                }
+            });
+        }
+        setInterval(checkDoorStatus, 1000);
+    </script>
+</head>
+<body>
+    <h1>Face Recognition System</h1>
+    <img id="facePreview" class="face-preview" src="/face_preview">
+    <div id="videoContainer">
+        <img src="/video_feed" width="640">
+    </div>
+    <h2 id="statusMessage"></h2>
+    <button class="back-btn" onclick="window.location.href='/'">Back to Home</button>
+</body>
+</html>
