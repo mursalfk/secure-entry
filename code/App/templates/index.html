@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition App</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        h1 { color: #333; }
+        .container { margin-top: 20px; }
+        .face-preview { position: absolute; top: 10px; right: 10px; width: 100px; height: 100px; border: 2px solid #333; }
+        button { padding: 15px 25px; font-size: 18px; margin: 10px; cursor: pointer; border: none; }
+        .open-btn { background-color: green; color: white; }
+        .exit-btn { background-color: red; color: white; }
+    </style>
+    <script>
+        function startCamera() {
+            fetch('/open_door').then(response => response.json()).then(data => {
+                if (data.status === 'started') {
+                    document.getElementById('videoContainer').innerHTML = '<img src="/video_feed" width="640">';
+                    document.getElementById('facePreview').src = "/face_preview";
+                    document.getElementById('openDoorBtn').style.display = 'none';
+                    document.getElementById('statusMessage').innerHTML = "";
+                }
+            });
+        }
+
+        function checkDoorStatus() {
+            fetch('/door_status').then(response => response.json()).then(data => {
+                if (data.door_opened) {
+                    document.getElementById('statusMessage').innerHTML = "🚪 Door Opened! Camera closing in " + data.remaining_time + " second(s)";
+                } else if (data.recognized_id !== null) {
+                    document.getElementById('videoContainer').innerHTML = '';
+                    document.getElementById('statusMessage').innerHTML = "Welcome Home, " + data.recognized_id;
+                    document.getElementById('openDoorBtn').style.display = 'block';
+                }
+            });
+        }
+
+        setInterval(checkDoorStatus, 1000);
+    </script>
+</head>
+<body>
+    <h1>Face Recognition System</h1>
+    <img id="facePreview" class="face-preview">
+    <div id="videoContainer"></div>
+    <h2 id="statusMessage"></h2>
+
+    <div class="container">
+        <button id="openDoorBtn" class="open-btn" onclick="startCamera()">Open Door</button>
+        <button class="exit-btn" onclick="window.location.href='/exit'">Exit</button>
+    </div>
+</body>
+</html>

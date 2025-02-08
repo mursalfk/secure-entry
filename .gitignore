@@ -1,0 +1,13 @@
+# Ignore model files
+models/
+weights/
+
+# Ignore specific file types
+*.h5
+*.pt
+*.bin
+*.ckpt
+
+# Ignore large data files
+*.zip
+*.tar.gz
