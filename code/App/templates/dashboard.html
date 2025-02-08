@@ -5,66 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <script>
-        function captureFaces(userId) {
-            // Show the modal
+        function captureFaces(username) {
             document.getElementById("status-modal").style.display = "block";
             document.getElementById("status-updates").innerHTML = "Capturing face poses...";
 
-            fetch(`/capture_faces/${userId}`, { method: "POST" })
+            fetch(`/capture_faces/${username}`, { method: "POST" })
                 .then(response => response.json())
                 .then(data => {
                     let updates = document.getElementById("status-updates");
-                    updates.innerHTML = ""; // Clear previous messages
+                    updates.innerHTML = data.update; // Only show latest update
 
-                    data.updates.forEach((msg) => {
-                        let p = document.createElement("p");
-                        p.textContent = msg;
-                        if (msg === "Training Complete") {
-                            p.style.fontWeight = "bold";
-                        }
-                        updates.appendChild(p);
-                    });
+                    if (data.update === "Training Complete") {
+                        updates.style.fontWeight = "bold";
+                    }
 
-                    document.getElementById("ok-button").style.display = "block"; 
-                    document.getElementById("ok-button").style.width = "100%";
+                    document.getElementById("ok-button").style.display = "block";
                 });
         }
 
         function closePopup() {
             document.getElementById("status-modal").style.display = "none";
-            location.reload(); // Refresh page after training completes
+            location.reload();
         }
     </script>
     <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            color: #333;
-        }
-        table {
-            margin: auto;
-            border-collapse: collapse;
-            width: 60%;
-        }
-        table, th, td {
-            border: 1px solid black;
-            padding: 10px;
-        }
-        img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-        }
-        button {
-            padding: 10px;
-            cursor: pointer;
-        }
-        .logout-btn {
-            background-color: red;
-            color: white;
-        }
+        body { text-align: center; font-family: Arial, sans-serif; }
+        h1 { color: #333; }
+        table { margin: auto; border-collapse: collapse; width: 80%; }
+        table, th, td { border: 1px solid black; padding: 10px; }
+        img { width: 80px; height: 80px; border-radius: 50%; }
+        button { padding: 10px; cursor: pointer; }
+        .logout-btn { background-color: red; color: white; }
     </style>
 </head>
 <body>
@@ -75,21 +46,25 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Username</th>
             <th>Face</th>
+            <th>Last Entered</th>
             <th>Action</th>
         </tr>
         {% for user in users %}
         <tr>
             <td>{{ user[0] }}</td>
             <td>{{ user[1] }}</td>
+            <td>{{ user[2] }}</td>
             <td>
-                <img src="data:image/jpeg;base64,{{ user[2] | b64encode }}" alt="Face"/>
+                <img src="data:image/jpeg;base64,{{ user[3] }}" alt="Face"/>
             </td>
+            <td>{{ user[4] if user[4] else 'Never' }}</td>
             <td>
-                <a href="{{ url_for('admin.remove_user', user_id=user[0]) }}">
+                <a href="{{ url_for('admin.remove_user', username=user[2]) }}">
                     <button>Delete</button>
                 </a>
-                <a href="#" onclick="captureFaces({{ user[0] }})">
+                <a href="#" onclick="captureFaces('{{ user[2] }}')">
                     <button>Capture Face Poses</button>
                 </a>
             </td>
@@ -106,7 +81,8 @@
 
     <h2>Add New User</h2>
     <form method="POST" action="{{ url_for('admin.add_new_user') }}" enctype="multipart/form-data">
-        <input type="text" name="name" placeholder="User Name" required />
+        <input type="text" name="name" placeholder="Full Name" required />
+        <input type="text" name="username" placeholder="Username (Unique)" required />
         <input type="file" name="image" accept="image/*" required />
         <button type="submit">Add User</button>
     </form>

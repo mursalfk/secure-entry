@@ -1,4 +1,6 @@
 import psycopg2
+import base64
+from datetime import datetime
 from config import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
 
 def connect_db():
@@ -19,53 +21,69 @@ def init_db():
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
-            image BYTEA NOT NULL
+            username VARCHAR(100) UNIQUE NOT NULL,
+            image BYTEA NOT NULL,
+            last_entered TIMESTAMP DEFAULT NULL
         )
     """)
     conn.commit()
     cursor.close()
     conn.close()
 
-def add_user(name, image_data):
+def add_user(name, username, image_data):
     """Add a new user to the database."""
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO users (name, image) VALUES (%s, %s)", (name, psycopg2.Binary(image_data)))
+    cursor.execute("INSERT INTO users (name, username, image) VALUES (%s, %s, %s)", 
+                   (name, username, psycopg2.Binary(image_data)))
     conn.commit()
     cursor.close()
     conn.close()
 
 def get_all_users():
-    """Retrieve all users from the database."""
+    """Retrieve all users from the database and convert image to Base64."""
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT id, name, image FROM users")
+    cursor.execute("SELECT id, name, username, image, last_entered FROM users")
     users = cursor.fetchall()
     cursor.close()
     conn.close()
 
-    # DEBUGGING: Print users to check
-    print("Fetched Users:", users)
+    # Convert image to Base64 for HTML rendering
+    users_processed = []
+    for user in users:
+        id, name, username, image_binary, last_entered = user
+        image_b64 = base64.b64encode(image_binary).decode('utf-8')
+        users_processed.append((id, name, username, image_b64, last_entered))
 
-    return users
+    return users_processed
 
-def delete_user(user_id):
-    """Delete a user from the database."""
+def delete_user(username):
+    """Delete a user from the database by username."""
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
+    cursor.execute("DELETE FROM users WHERE username = %s", (username,))
     conn.commit()
     cursor.close()
     conn.close()
 
-def get_user_by_id(user_id):
-    """Retrieve a user by ID."""
+def get_user_by_username(username):
+    """Retrieve a user by username."""
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT id, name FROM users WHERE id = %s", (user_id,))
+    cursor.execute("SELECT id, name, username FROM users WHERE username = %s", (username,))
     user = cursor.fetchone()
     conn.close()
     return user
+
+def update_last_entered(username):
+    """Update the last entered timestamp when a user logs in."""
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET last_entered = %s WHERE username = %s", (datetime.now(), username))
+    conn.commit()
+    cursor.close()
+    conn.close()
 
 # Initialize database on first run
 init_db()
