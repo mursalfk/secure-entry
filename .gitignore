@@ -11,3 +11,8 @@ weights/
 # Ignore large data files
 *.zip
 *.tar.gz
+
+# Ignore images in user_dataset folder
+user_dataset/*.jpg
+user_dataset/*.jpeg
+user_dataset/*.png
