@@ -30,6 +30,24 @@ def init_db():
     cursor.close()
     conn.close()
 
+def get_user_name_by_id(user_id):
+    """Fetch the username from the database given an ID."""
+    conn = connect_db()
+    cursor = conn.cursor()
+    
+    # Ensure user_id is an integer (avoid numpy.int64 issue)
+    user_id = int(user_id)
+    print(f"User ID: {user_id}")
+
+    cursor.execute("SELECT name FROM users WHERE id = %s", (user_id,))
+    user = cursor.fetchone()
+    
+    cursor.close()
+    conn.close()
+
+    return user[0] if user else None  # Return name if found, else None
+
+
 def add_user(name, username, image_data):
     """Add a new user to the database."""
     conn = connect_db()

@@ -42,6 +42,11 @@ def face_preview():
     """Face preview streaming route."""
     return Response(generate_face_preview(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/about')
+def about():
+    """About page."""
+    return render_template('about.html')
+
 @app.route('/exit')
 def exit_app():
     """Close the application."""

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About SecureEntry</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/about.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>SecureEntry - Integrated Facial and Voice Recognition System</h1>
+
+      <!-- Author Section -->
+      <div class="card authors">
+        <h2>Authors</h2>
+        <p>
+          📌
+          <a href="mailto:kumbhar.2047419@studenti.uniroma1.it"
+            >Mursal Furqan Kumbhar</a
+          >
+          (Mat.: 2047419)<br />
+          📌
+          <a href="mailto:ghosh.2053796@studenti.uniroma1.it">Srinjan Ghosh</a>
+          (Mat.: 2053796)
+        </p>
+      </div>
+
+      <!-- Cards for Sections -->
+      <div class="cards">
+        <div class="card">
+          <h2>Problem Statement</h2>
+          <p>
+            Traditional door authentication methods can be easily bypassed,
+            making home security a major concern. Our solution enhances security
+            using facial and voice recognition.
+          </p>
+        </div>
+
+        <div class="card">
+          <h2>Solution</h2>
+          <p>
+            We propose an intrusion alarm system using a smartphone installed at
+            the door. Users will undergo face and voice verification before
+            entry. Two failed attempts will trigger an alarm.
+          </p>
+        </div>
+
+        <div class="card">
+          <h2>Objective</h2>
+          <p>
+            To develop a dual-authentication security system that enhances home
+            security while providing users with a seamless experience.
+          </p>
+        </div>
+
+        <div class="card">
+          <h2>Authentication Process</h2>
+          <ul>
+            <li>Users authenticate via a smartphone.</li>
+            <li>Face and voice are captured for verification.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Dual Verification</h2>
+          <ul>
+            <li>Face recognition using OpenCV.</li>
+            <li>Voice authentication using pre-recorded samples.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Access Control</h2>
+          <ul>
+            <li>Both verifications must pass to unlock the door.</li>
+            <li>Two failed attempts trigger an intrusion alarm.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Tech Stack</h2>
+          <ul>
+            <li>Face Recognition: <b>OpenCV</b></li>
+            <li>Backend Processing: <b>Flask</b></li>
+            <li>Styling: <b>SCSS</b></li>
+            <li>Data Storage: <b>PostgreSQL</b></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Algorithms</h2>
+          <ul>
+            <li>Face Detection: <b>Haar Cascades</b></li>
+            <li>Face Recognition: <b>LBPH</b></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Conclusion</h2>
+          <p>
+            SecureEntry will redefine home security by integrating facial and
+            voice recognition for authentication. This system will ensure
+            maximum security with seamless user access.
+          </p>
+        </div>
+      </div>
+
+      <!-- Back Button -->
+      <a href="/" class="back-btn">Back to Home</a>
+    </div>
+  </body>
+</html>

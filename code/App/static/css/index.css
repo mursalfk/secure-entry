@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+body {
+  font-family: "Poppins", sans-serif;
+  text-align: center;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+h1 {
+  color: #333;
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 15px 25px;
+  font-size: 18px;
+  margin: 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+  text-transform: uppercase;
+}
+button:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+.open-btn {
+  background: linear-gradient(45deg, #28A745, #1e7e34);
+  color: #ffffff;
+}
+
+.admin-btn {
+  background: linear-gradient(45deg, #007BFF, #0062cc);
+  color: #ffffff;
+}
+
+.exit-btn {
+  background: linear-gradient(45deg, #DC3545, #bd2130);
+  color: #ffffff;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}/*# sourceMappingURL=index.css.map */
